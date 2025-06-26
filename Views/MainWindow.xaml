@@ -1,0 +1,59 @@
+﻿<Window x:Class="Polyclinic.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Polyclinic.Views"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        Title="Поликлиника - система учёта посещений"
+        MinHeight="600" MinWidth="900"
+        Height="720" Width="1200"
+        WindowStartupLocation="CenterScreen"
+        Background="{DynamicResource PrimaryBackgroundBrush}">
+
+    <Window.Resources>
+        <Style TargetType="TabItem" BasedOn="{StaticResource MaterialDesignTabItem}">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Padding" Value="20 10"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Хедер -->
+        <Border Grid.Row="0" Background="{DynamicResource PrimaryBrush}" 
+                Padding="20" CornerRadius="0 0 10 10" Effect="{StaticResource ShadowEffect}">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <materialDesign:PackIcon Kind="Hospital" Width="40" Height="40" Foreground="White"/>
+                <TextBlock Text="Поликлиника №1" Margin="15 0 0 0" 
+                           FontSize="24" FontWeight="Bold" Foreground="White"
+                           VerticalAlignment="Center"/>
+                <TextBlock Text="Система учёта посещений" Margin="20 0 0 0"
+                           FontSize="18" Foreground="White" Opacity="0.9"
+                           VerticalAlignment="Center"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Основное содержимое -->
+        <TabControl Grid.Row="1" Margin="10" Background="Transparent"
+                    materialDesign:ColorZoneAssist.Mode="PrimaryMid">
+            <TabItem Header="Врачи" Style="{StaticResource AnimatedTabItem}">
+                <local:DoctorsView DataContext="{Binding DoctorsVM}" Loaded="DoctorsView_Loaded"/>
+            </TabItem>
+            <TabItem Header="Пациенты" Style="{StaticResource AnimatedTabItem}">
+                <local:PatientsView DataContext="{Binding PatientsVM}"/>
+            </TabItem>
+            <TabItem Header="Визиты" Style="{StaticResource AnimatedTabItem}">
+                <local:VisitsView DataContext="{Binding VisitsVM}"/>
+            </TabItem>
+            <TabItem Header="Отчёты" Style="{StaticResource AnimatedTabItem}">
+                <local:ReportsView DataContext="{Binding ReportsVM}"/>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>

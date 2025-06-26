@@ -1,0 +1,121 @@
+﻿<UserControl x:Class="Polyclinic.Views.ReportsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             xmlns:local="clr-namespace:Polyclinic.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="800">
+
+    <TabControl Style="{StaticResource MaterialDesignTabControl}">
+        <TabItem Header="Статистика визитов">
+            <Grid Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- Фильтры -->
+                <Border Grid.Row="0" CornerRadius="5" Background="{DynamicResource CardBackgroundBrush}"
+                        Padding="15" Margin="0 0 0 10" Effect="{StaticResource ShadowEffect}">
+                    <StackPanel Orientation="Horizontal">
+                        <DatePicker materialDesign:HintAssist.Hint="Дата с" SelectedDate="{Binding StartDate}"
+                                    Style="{StaticResource MaterialDesignFloatingHintDatePicker}" Width="180"/>
+
+                        <DatePicker materialDesign:HintAssist.Hint="Дата по" SelectedDate="{Binding EndDate}"
+                                    Style="{StaticResource MaterialDesignFloatingHintDatePicker}" Width="180" Margin="10 0 0 0"/>
+
+                        <Button Content="Сформировать" Command="{Binding GenerateReportsCommand}"
+                                Style="{StaticResource PrimaryButton}" Margin="10 0 0 0" Width="150"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Графики -->
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- График по врачам -->
+                    <Border Grid.Column="0" CornerRadius="5" Background="{DynamicResource CardBackgroundBrush}"
+                            Margin="0 0 5 0" Effect="{StaticResource ShadowEffect}">
+                        <lvc:CartesianChart Series="{Binding DoctorVisitSeries}" LegendLocation="Bottom">
+                            <lvc:CartesianChart.AxisX>
+                                <lvc:Axis Title="Врачи" Labels="{Binding DoctorNames}"/>
+                            </lvc:CartesianChart.AxisX>
+                            <lvc:CartesianChart.AxisY>
+                                <lvc:Axis Title="Количество визитов"/>
+                            </lvc:CartesianChart.AxisY>
+                        </lvc:CartesianChart>
+                    </Border>
+
+                    <!-- График по диагнозам -->
+                    <Border Grid.Column="1" CornerRadius="5" Background="{DynamicResource CardBackgroundBrush}"
+                            Margin="5 0 0 0" Effect="{StaticResource ShadowEffect}">
+                        <lvc:PieChart Series="{Binding DiagnosisSeries}" LegendLocation="Bottom"
+                                     InnerRadius="70" Hoverable="True" DataTooltip="{x:Null}"/>
+                    </Border>
+                </Grid>
+            </Grid>
+        </TabItem>
+
+        <TabItem Header="Табличные данные">
+            <Grid Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- Кнопки экспорта -->
+                <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 0 0 10">
+                    <Button Content="Экспорт в Excel" Style="{StaticResource PrimaryButton}" Width="150"
+                            Command="{Binding ExportToExcelCommand}"/>
+                    <Button Content="Экспорт в PDF" Style="{StaticResource PrimaryButton}" Width="150" Margin="10 0 0 0"
+                            Command="{Binding ExportToPdfCommand}"/>
+                </StackPanel>
+
+                <!-- Таблицы -->
+                <TabControl Grid.Row="1" Style="{StaticResource MaterialDesignTabControl}">
+                    <TabItem Header="По врачам">
+                        <DataGrid ItemsSource="{Binding DoctorVisitCounts}" AutoGenerateColumns="False"
+                                 Style="{StaticResource ModernDataGrid}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Врач" Binding="{Binding DoctorName}" Width="*"/>
+                                <DataGridTextColumn Header="Специальность" Binding="{Binding Specialty}" Width="*"/>
+                                <DataGridTextColumn Header="Количество визитов" Binding="{Binding VisitCount}" Width="*">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock" BasedOn="{StaticResource DataGridTextBlockStyle}">
+                                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                                            <Setter Property="FontWeight" Value="Bold"/>
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </TabItem>
+
+                    <TabItem Header="По диагнозам">
+                        <DataGrid ItemsSource="{Binding DiagnosisCounts}" AutoGenerateColumns="False"
+                                 Style="{StaticResource ModernDataGrid}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Код диагноза" Binding="{Binding DiagnosisCode}" Width="*"/>
+                                <DataGridTextColumn Header="Диагноз" Binding="{Binding DiagnosisName}" Width="*"/>
+                                <DataGridTextColumn Header="Количество случаев" Binding="{Binding Count}" Width="*">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock" BasedOn="{StaticResource DataGridTextBlockStyle}">
+                                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                                            <Setter Property="FontWeight" Value="Bold"/>
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </TabItem>
+                </TabControl>
+            </Grid>
+        </TabItem>
+    </TabControl>
+</UserControl>
