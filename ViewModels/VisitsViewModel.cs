@@ -8,7 +8,7 @@ namespace Polyclinic.ViewModels
 {
     public class VisitsViewModel : ViewModelBase
     {
-        private readonly IDatabaseService _databaseService;
+        private readonly DatabaseService _databaseService;
 
         public ObservableCollection<Visit> Visits { get; set; }
         public ObservableCollection<Doctor> Doctors { get; set; }
@@ -50,7 +50,7 @@ namespace Polyclinic.ViewModels
             }
         }
 
-        public VisitsViewModel(IDatabaseService databaseService)
+        public VisitsViewModel(DatabaseService databaseService)
         {
             _databaseService = databaseService;
 
@@ -63,9 +63,7 @@ namespace Polyclinic.ViewModels
 
         private void FilterVisits()
         {
-            Visits = new ObservableCollection<Visit>(
-                _databaseService.GetVisits().Where(v => v.VisitDate >= StartDate && v.VisitDate <= EndDate));
-            OnPropertyChanged(nameof(Visits));
+            return;
         }
     }
 }

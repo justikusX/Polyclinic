@@ -7,7 +7,7 @@ namespace Polyclinic.ViewModels
 {
     public class DoctorsViewModel : ViewModelBase
     {
-        private readonly IDatabaseService _databaseService;
+        private readonly DatabaseService _databaseService;
 
         public ObservableCollection<Doctor> Doctors { get; set; }
         public ObservableCollection<string> Specialties { get; set; }
@@ -35,7 +35,7 @@ namespace Polyclinic.ViewModels
             }
         }
 
-        public DoctorsViewModel(IDatabaseService databaseService)
+        public DoctorsViewModel(DatabaseService databaseService)
         {
             _databaseService = databaseService;
             Doctors = new ObservableCollection<Doctor>(_databaseService.GetDoctors());
@@ -55,5 +55,26 @@ namespace Polyclinic.ViewModels
             }
             OnPropertyChanged(nameof(Doctors));
         }
+
+
+        public ObservableCollection<Doctor> ChitateliList
+        {
+            get { return Doctors; }
+            set
+            {
+                if (Doctors != value)
+                {
+                    Doctors = value;
+                    OnPropertyChanged(nameof(Doctors));
+                }
+            }
+        }
+        public DoctorsViewModel()
+        {
+            chitateliService = new ChitateliService();
+            Load();
+        }
     }
+
+
 }

@@ -14,35 +14,7 @@ namespace Polyclinic.Services
 
         public DatabaseService()
         {
-            // Инициализация тестовыми данными
-            _diagnoses = new List<Diagnosis>
-            {
-                new Diagnosis { Id = 1, Code = "J06.9", Name = "Острая инфекция верхних дыхательных путей неуточненная" },
-                new Diagnosis { Id = 2, Code = "I10", Name = "Эссенциальная (первичная) гипертензия" },
-                new Diagnosis { Id = 3, Code = "E11.9", Name = "Сахарный диабет 2 типа без осложнений" }
-            };
-
-            _doctors = new List<Doctor>
-            {
-                new Doctor { Id = 1, LastName = "Иванов", FirstName = "Иван", MiddleName = "Иванович", Specialty = "Терапевт", Experience = 10 },
-                new Doctor { Id = 2, LastName = "Петрова", FirstName = "Мария", MiddleName = "Сергеевна", Specialty = "Кардиолог", Experience = 15 },
-                new Doctor { Id = 3, LastName = "Сидоров", FirstName = "Алексей", MiddleName = "Владимирович", Specialty = "Эндокринолог", Experience = 8 }
-            };
-
-            _patients = new List<Patient>
-            {
-                new Patient { Id = 1, LastName = "Кузнецов", FirstName = "Дмитрий", MiddleName = "Александрович", BirthDate = new DateTime(1985, 5, 12), Address = "ул. Ленина, 15" },
-                new Patient { Id = 2, LastName = "Смирнова", FirstName = "Ольга", MiddleName = "Игоревна", BirthDate = new DateTime(1978, 11, 3), Address = "пр. Победы, 42" },
-                new Patient { Id = 3, LastName = "Васильев", FirstName = "Петр", MiddleName = "Сергеевич", BirthDate = new DateTime(1992, 7, 25), Address = "ул. Мира, 7" }
-            };
-
-            _visits = new List<Visit>
-            {
-                new Visit { Id = 1, VisitDate = DateTime.Now.AddDays(-5), DoctorId = 1, PatientId = 1, DiagnosisId = 1 },
-                new Visit { Id = 2, VisitDate = DateTime.Now.AddDays(-3), DoctorId = 2, PatientId = 2, DiagnosisId = 2 },
-                new Visit { Id = 3, VisitDate = DateTime.Now.AddDays(-1), DoctorId = 3, PatientId = 3, DiagnosisId = 3 },
-                new Visit { Id = 4, VisitDate = DateTime.Now.AddDays(-2), DoctorId = 1, PatientId = 2, DiagnosisId = 1 }
-            };
+           
 
             // Навигационные свойства
             foreach (var visit in _visits)

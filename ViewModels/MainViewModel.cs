@@ -7,14 +7,14 @@ namespace Polyclinic.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {
-        private readonly IDatabaseService _databaseService;
+        private readonly DatabaseService _databaseService;
 
         public DoctorsViewModel DoctorsVM { get; }
         public PatientsViewModel PatientsVM { get; }
         public VisitsViewModel VisitsVM { get; }
         public ReportsViewModel ReportsVM { get; }
 
-        public MainViewModel(IDatabaseService databaseService)
+        public MainViewModel(DatabaseService databaseService)
         {
             _databaseService = databaseService;
 

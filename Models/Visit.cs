@@ -1,21 +1,23 @@
-﻿using Polyclinic.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Polyclinic.Models
+namespace Polyclinic.Models;
+
+public partial class Visit
 {
-    public class Visit
-    {
-        public int Id { get; set; }
-        public DateTime VisitDate { get; set; }
-        public int DoctorId { get; set; }
-        public Doctor Doctor { get; set; }
-        public int PatientId { get; set; }
-        public Patient Patient { get; set; }
-        public int DiagnosisId { get; set; }
-        public Diagnosis Diagnosis { get; set; }
-    }
+    public int Id { get; set; }
+
+    public int DoctorId { get; set; }
+
+    public int PatientId { get; set; }
+
+    public int DiagnosisId { get; set; }
+
+    public DateOnly VisitDate { get; set; }
+
+    public virtual Diagnosis Diagnosis { get; set; } = null!;
+
+    public virtual Doctor Doctor { get; set; } = null!;
+
+    public virtual Patient Patient { get; set; } = null!;
 }

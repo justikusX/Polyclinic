@@ -6,7 +6,7 @@ namespace Polyclinic.ViewModels
 {
     public class PatientsViewModel : ViewModelBase
     {
-        private readonly IDatabaseService _databaseService;
+        private readonly DatabaseService _databaseService;
 
         public ObservableCollection<Patient> Patients { get; set; }
 
@@ -21,7 +21,7 @@ namespace Polyclinic.ViewModels
             }
         }
 
-        public PatientsViewModel(IDatabaseService databaseService)
+        public PatientsViewModel(DatabaseService databaseService)
         {
             _databaseService = databaseService;
             Patients = new ObservableCollection<Patient>(_databaseService.GetPatients());

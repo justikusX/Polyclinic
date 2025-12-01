@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Polyclinic.Services
 {
-    public interface IDatabaseService
+    public interface DatabaseService
     {
         IEnumerable<Doctor> GetDoctors();
         IEnumerable<string> GetSpecialties();

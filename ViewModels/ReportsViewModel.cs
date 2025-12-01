@@ -8,12 +8,12 @@ namespace Polyclinic.ViewModels
 {
     public class ReportsViewModel : ViewModelBase
     {
-        private readonly IDatabaseService _databaseService;
+        private readonly DatabaseService _databaseService;
 
         public ObservableCollection<DoctorVisitCount> DoctorVisitCounts { get; set; }
         public ObservableCollection<DiagnosisCount> DiagnosisCounts { get; set; }
 
-        public ReportsViewModel(IDatabaseService databaseService)
+        public ReportsViewModel(DatabaseService databaseService)
         {
             _databaseService = databaseService;
             GenerateReports();
@@ -26,7 +26,7 @@ namespace Polyclinic.ViewModels
                 .GroupBy(v => v.Doctor)
                 .Select(g => new DoctorVisitCount
                 {
-                    DoctorName = g.Key.FullName,
+                    DoctorName = g.Key.FirstName,
                     Specialty = g.Key.Specialty,
                     VisitCount = g.Count()
                 });

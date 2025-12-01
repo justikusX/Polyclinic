@@ -1,23 +1,21 @@
-﻿using Polyclinic.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Polyclinic.Models
+namespace Polyclinic.Models;
+
+public partial class Patient
 {
-    public class Patient
-    {
-        public int Id { get; set; }
-        public string LastName { get; set; }
-        public string FirstName { get; set; }
-        public string MiddleName { get; set; }
-        public DateTime BirthDate { get; set; }
-        public string Address { get; set; }
+    public int Id { get; set; }
 
-        public string FullName => $"{LastName} {FirstName} {MiddleName}";
+    public string LastName { get; set; } = null!;
 
-        public List<Visit> Visits { get; set; } = new List<Visit>();
-    }
+    public string FirstName { get; set; } = null!;
+
+    public string? Patronymic { get; set; }
+
+    public DateOnly BirthDate { get; set; }
+
+    public string Address { get; set; } = null!;
+
+    public virtual ICollection<Visit> Visits { get; set; } = new List<Visit>();
 }
