@@ -18,4 +18,6 @@ public partial class Doctor
     public int Experience { get; set; }
 
     public virtual ICollection<Visit> Visits { get; set; } = new List<Visit>();
+
+    public string FullName => $"{LastName} {FirstName} {Patronymic ?? ""}".Trim();
 }

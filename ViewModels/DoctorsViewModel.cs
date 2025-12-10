@@ -69,11 +69,7 @@ namespace Polyclinic.ViewModels
                 }
             }
         }
-        public DoctorsViewModel()
-        {
-            chitateliService = new ChitateliService();
-            Load();
-        }
+       
     }
 
 

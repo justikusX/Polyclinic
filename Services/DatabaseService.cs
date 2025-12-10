@@ -1,68 +1,119 @@
-﻿using Polyclinic.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using Polyclinic.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Polyclinic.Services
 {
-    public class DatabaseService : IDatabaseService
+    public class DatabaseService
     {
-        private readonly List<Doctor> _doctors;
-        private readonly List<Patient> _patients;
-        private readonly List<Visit> _visits;
-        private readonly List<Diagnosis> _diagnoses;
+        private readonly PolyclinicContext _context;
 
         public DatabaseService()
         {
-           
+            _context = new PolyclinicContext();
+        }
 
-            // Навигационные свойства
-            foreach (var visit in _visits)
+        // Доктора
+        public List<Doctor> GetDoctors()
+        {
+            try
             {
-                visit.Doctor = _doctors.First(d => d.Id == visit.DoctorId);
-                visit.Patient = _patients.First(p => p.Id == visit.PatientId);
-                visit.Diagnosis = _diagnoses.First(d => d.Id == visit.DiagnosisId);
-
-                visit.Doctor.Visits.Add(visit);
-                visit.Patient.Visits.Add(visit);
-                visit.Diagnosis.Visits.Add(visit);
+                return _context.Doctors
+                    .OrderBy(d => d.LastName)
+                    .ThenBy(d => d.FirstName)
+                    .ToList();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error loading doctors: {ex.Message}");
+                return new List<Doctor>();
             }
         }
 
-        public IEnumerable<Doctor> GetDoctors() => _doctors;
-
-        public IEnumerable<string> GetSpecialties() => _doctors.Select(d => d.Specialty).Distinct();
-
-        public IEnumerable<Patient> GetPatients() => _patients;
-
-        public IEnumerable<Visit> GetVisits() => _visits;
-
-        public IEnumerable<Diagnosis> GetDiagnoses() => _diagnoses;
-
-        public void AddDoctor(Doctor doctor)
+        // Пациенты
+        public List<Patient> GetPatients()
         {
-            doctor.Id = _doctors.Max(d => d.Id) + 1;
-            _doctors.Add(doctor);
+            try
+            {
+                return _context.Patients
+                    .OrderBy(p => p.LastName)
+                    .ThenBy(p => p.FirstName)
+                    .ToList();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error loading patients: {ex.Message}");
+                return new List<Patient>();
+            }
         }
 
-        public void AddPatient(Patient patient)
+        // Диагнозы
+        public List<Diagnosis> GetDiagnoses()
         {
-            patient.Id = _patients.Max(p => p.Id) + 1;
-            _patients.Add(patient);
+            try
+            {
+                return _context.Diagnoses
+                    .OrderBy(d => d.Code)
+                    .ToList();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error loading diagnoses: {ex.Message}");
+                return new List<Diagnosis>();
+            }
         }
 
-        public void AddVisit(Visit visit)
+        // Визиты с загрузкой связанных данных
+        public List<Visit> GetVisits()
         {
-            visit.Id = _visits.Max(v => v.Id) + 1;
-            _visits.Add(visit);
+            try
+            {
+                return _context.Visits
+                    .Include(v => v.Doctor)
+                    .Include(v => v.Patient)
+                    .Include(v => v.Diagnosis)
+                    .OrderByDescending(v => v.VisitDate)
+                    .ToList();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error loading visits: {ex.Message}");
+                return new List<Visit>();
+            }
+        }
 
-            visit.Doctor = _doctors.First(d => d.Id == visit.DoctorId);
-            visit.Patient = _patients.First(p => p.Id == visit.PatientId);
-            visit.Diagnosis = _diagnoses.First(d => d.Id == visit.DiagnosisId);
+        // Специальности докторов
+        public List<string> GetSpecialties()
+        {
+            try
+            {
+                return _context.Doctors
+                    .Select(d => d.Specialty)
+                    .Distinct()
+                    .OrderBy(s => s)
+                    .ToList();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error loading specialties: {ex.Message}");
+                return new List<string>();
+            }
+        }
 
-            visit.Doctor.Visits.Add(visit);
-            visit.Patient.Visits.Add(visit);
-            visit.Diagnosis.Visits.Add(visit);
+        // Сохранение изменений
+        public bool SaveChanges()
+        {
+            try
+            {
+                return _context.SaveChanges() > 0;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error saving changes: {ex.Message}");
+                return false;
+            }
         }
     }
 }

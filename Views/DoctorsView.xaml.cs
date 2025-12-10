@@ -21,5 +21,7 @@ namespace Polyclinic.Views
         {
             InitializeComponent();
         }
+
+     
     }
 }
